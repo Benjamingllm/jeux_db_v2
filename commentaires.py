@@ -1,5 +1,5 @@
 """
-format choix : {
+format choices : {
             numero : fonction 
 }
 option [str]
@@ -12,8 +12,10 @@ choix dispo : jouer, voir les scores , quitter
 
 
 Menu
+    ouvrir la db (elle vas passer en argument dans les 2 choix qui la nécessite puis dans les fonction qui
+    la demande (sauvegarder le score, recuperer les personnages, monstres etc ))
     recuperer le choix du joueur parmis plusieurs options 
-    lancer le choix en question (on appelle choix[1]())
+    lancer le choix en question (on appelle choices[choice]())
 
 
     
@@ -44,25 +46,38 @@ verifier si le choix est valide
 #demander pseudo
 #recuperer les choix de personnages du joueurs parmis plusieures options
     team = []
+    
     tant que l'équipe n'est pas pleine
         recuperer le choix du joueur parmis la liste d'options
         créer une instance du personnage
         ajouter dans la team
 
-#lancer la boucle de jeux
+#score =  boucle de jeux
 #afficher le score 
+#proposer de cliquer sur une touche
+#revenir au menu 
 
+choisir un monstre au hasard
+    recuperer les monstres 
+    en retourner un au hasard
+
+recup les monstres
+recup les joueurs
 
 #### boucle de jeux ####
     score = 0
+    choisir un monstre au hasard
     
     tant que la team n'es pas morte:
-        choisir un monstre au hasart
-        phase de combat
+        score += phase de combat
+        si monstre est mort  :
+            choisir un nouveau monstre
 
 
-    sauvegarder les resultat dans la db 
-    retourner score
+    afficher la mort du personnage
+    sauvegarder les resultat dans la db
+    retourner score 
+
 
 
 
@@ -71,43 +86,56 @@ afficher les resultat (event)
         afficher event    
         
 
-tour
-    events = []
-    ajouter l'attaque du monstre a event
-    ajouter l'attaque de la team a event
-    on retourne les events
+phase de combat
+    tant que la team est pas morte et que le monstre est pas mort :
+        event = attaque equipe
+        si monstre mort : 
+            afficher event
+            retourner score
+        ajouter a event attaque du monstre
+        ajouter 1 au score
+        afficher event
+    retourner score
+    
+    
 
     
-attaque du monstre
-    events = []
-    le monstre attaque un perso aléatoire
-            on choisis un personnage aléatoire
-            le monstre l'attaque
-            on ajoute l'évenement a la liste
-            si il est mort :
-                on l'enlève de la team
-                on ajoute l'event a la liste
-    retourner events
+attaque equipe
+    event = []
+    pour personnage dans la team:
+        personnage attaque le monstre 
+        ajouter l'event a la liste
+        si monstre est mort :
+            ajouter l'event a la liste
+            break
+    retourner event 
+
+attaque monstre :
+    event = []
+    choisi un personnage au hasard 
+    le monstre attaque le personnage
+    ajouter l'event a la liste
+    si le personnage est mort :
+        ajouter l'event a la liste
+        on le retire de la team
+    retourne events
 
 
+        
 
-attaque de la team
-    events = []
-    pour personnages dans la team
-        personnage attaque le monstre
-        on ajoute a events
-        si le monstre est mort :
-             retourner events, True
-    retourner events, None
+
             
 
     
 
-#################### CHOIX LANCER JEUX #########################
+#################### CHOIX  quitter#########################
+quitter
 
-
-
-
+#################### CHOIX AFFICHER LES RESULTATS#########################
+recupperer les 3meilleurs score 
+afficher les 3 meilleurs score
+proposer de cliquer sur une touche 
+revenir au menu 
 
 
 
@@ -115,7 +143,7 @@ attaque de la team
 ###################################### CLASSES ##################################
 
 classe mob
-    initialisation (pv, atk,defense,est_mort)
+    initialisation (pv, atk,defense,est_mort,nom)
         on initialise les variables 
 
 
