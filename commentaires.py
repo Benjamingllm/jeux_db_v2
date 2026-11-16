@@ -46,37 +46,59 @@ verifier si le choix est valide
 #demander pseudo
 #recuperer les choix de personnages du joueurs parmis plusieures options
     team = []
-    
+    personnages recuoerer les personnages
+    monstres = recuperer les monstres
     tant que l'équipe n'est pas pleine
         recuperer le choix du joueur parmis la liste d'options
         créer une instance du personnage
         ajouter dans la team
 
 #score =  boucle de jeux
+sauvegarde score
+ferme la connexion 
 #afficher le score 
 #proposer de cliquer sur une touche
 #revenir au menu 
 
-choisir un monstre au hasard
-    recuperer les monstres 
-    en retourner un au hasard
 
-recup les monstres
-recup les joueurs
+####
+
+
+recuperer les monstres
+    recuperer les monstres dans la db 
+    les stocker dans une liste 
+    les retourner
+
+recup les personnages
+    recuperer les personnages dans la db 
+    les stocker dans une liste 
+    les retourner
+
+
+
+
+choisir un monstre au hasard
+    on prend un monstre au hasard
+    on crée une nouvelle instance de monstre et on la retourne
+
+    
+
+
 
 #### boucle de jeux ####
+    boucle de jeux
     score = 0
-    choisir un monstre au hasard
-    
-    tant que la team n'es pas morte:
-        score += phase de combat
-        si monstre est mort  :
-            choisir un nouveau monstre
+    monstre = nouveau monstre
+    tant que la team n'est pas vide :
+        events = attaque equipe
+        si monstre mort :
+            monstre = nouveau monstre
+        sinon :
+            ajouter attaque monstre a event
+        score += 1
+        afficher les events
 
-
-    afficher la mort du personnage
-    sauvegarder les resultat dans la db
-    retourner score 
+    retourner score
 
 
 
@@ -85,17 +107,6 @@ afficher les resultat (event)
     pour event in events:
         afficher event    
         
-
-phase de combat
-    tant que la team est pas morte et que le monstre est pas mort :
-        event = attaque equipe
-        si monstre mort : 
-            afficher event
-            retourner score
-        ajouter a event attaque du monstre
-        ajouter 1 au score
-        afficher event
-    retourner score
     
     
 
@@ -118,7 +129,7 @@ attaque monstre :
     si le personnage est mort :
         ajouter l'event a la liste
         on le retire de la team
-    retourne events
+    retourne event
 
 
         
@@ -143,18 +154,20 @@ revenir au menu
 ###################################### CLASSES ##################################
 
 classe mob
-    initialisation (pv, atk,defense,est_mort,nom)
+    initialisation (pv, atk,defense,nom)
         on initialise les variables 
 
 
-    attaque(cible)
-        cible prend des dégats equivalent au montant d'ataque
+
 
     prendre des dégats(montant)
         on enleve le maximum de : 1 et nombre de pv du montant d'ataque - la défense 
         si pv <=0:
             pv = 0
-            est_mort = true
+
+        
+    est_mort
+        retourner pv inferieur ou = a 0
 
         
 
@@ -168,6 +181,27 @@ classe Personnage(Mob)
 classe Enemi(Mob)
     initialisation
         hérite des paramètres de mob
-    
 
+
+Classe Event
+    INITIALISATION 
+        cible
+        source
+
+
+class Attaque(Event):
+    INTIalisation 
+        heritage de Event
+        dégats
+        vie
+
+    methode string d'affichage des données
+
+
+class Mort(Event)
+     INTIalisation 
+            heritage de Event
+
+
+    methode string d'affichage des données
 """
