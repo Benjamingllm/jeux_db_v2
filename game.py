@@ -1,37 +1,53 @@
+
+
+from utils import open_database , close_database
+from display import display_numbered_options
+
+
+def main():
+    while True :
+        open_database()
+        choice = get_valid_choice(OPTION_MENU)
+        OPTION_MENU[choice][1]()
+        close_database()
+
+def play():
+    pass
+
+def leaderboard():
+    pass
+
+def quitt():
+    pass
+
+OPTION_MENU = [
+    ("Jouer", play),
+    ("Voir le classement" , leaderboard),
+    ("Quitter", quitt),
+]
+
+def get_valid_choice(options):
+    while True:
+        display_numbered_options(texte for texte, fonction in OPTION_MENU)
+        choice = input("veuillez choisir une des options   ")
+        if is_valid_choice(choice, 1, len(options)):
+            return int(choice)
+        print("Choix invalide")
+
+
+def is_valid_choice(choice,minimum,maximum):
+    validator = [
+        lambda x: x.isdecimal(), 
+        lambda x: minimum <= int(x) <= maximum,
+    ]
+    result = all(condition(choice) for condition in validator)
+    return result
+
+
+main()
+
+
 """
-format choices : {
-            numero : fonction 
-}
-option [str]
-
-
-
-choix dispo : jouer, voir les scores , quitter
-
-################## Menu ################################
-
-
-Menu
-    tant que vrai:
-        ouvrir la db (elle vas passer en argument dans les 2 choix qui la nécessite puis dans les fonction qui
-        la demande (sauvegarder le score, recuperer les personnages, monstres etc ))
-        recuperer le choix du joueur parmis plusieurs options 
-        lancer le choix en question (on appelle choices[choice]())
-        fermer la connexion 
-
-
-
-    
-recuperer le choix du joueur parmis plusieurs options
-    Tant que Vrai
-        afficher les options numerotées
-        demander le choix au joueur
-        si le choix est valide
-            retourner int(choix)
-        afficher message d'erreur
-
-
-
 
 
 
@@ -136,16 +152,7 @@ attaque monstre :
     
 
 
-    
-verifier si le choix est valide
-    si le choix est pas is_digit
-        retourner False
-    choix = int(choix)
-    if choix inferieur maximum et superieur a minimum:
-        return true
-    return false
 
-TODO passer avec un validator
 
 #################### CHOIX  quitter#########################
 quitter

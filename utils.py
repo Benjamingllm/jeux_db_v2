@@ -1,19 +1,11 @@
+from pymongo import MongoClient
 
-"""
-
-
-afficher event (event)
-    pour event in events:
-        afficher event    
-
-        
-#afficher les 3 meilleurs score
+def open_database():
+    client = MongoClient("mongodb://localhost:27017/")
+    db = client["Game"]
+    return db
 
 
-
-#    
-
-afficher les options numereotées
-    pour index, option dans enumerate(options =  start = 1)
-        afficher f"{index} : {option}"
-        """
+def close_database():
+    client = MongoClient("mongodb://localhost:27017")
+    client.close()
