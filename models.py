@@ -12,7 +12,36 @@ classe mob
         
     est_mort
         retourner pv inferieur ou = a 0
+"""
 
+class Mob:
+    def __init__(self,name,hp,atk,defense):
+        self.name = name
+        self.hp = hp
+        self.atk = atk
+        self.defense = defense
+
+    def take_damage(self,amount):
+        damages = max(1, amount - self.defense)
+        self.pv -= damages
+        if self.pv < 0:
+            self.pv = 0
+
+
+    def is_dead(self):
+        return self.pv == 0
+
+class Monster(Mob):
+    def __init__(self, name, hp, atk, defense):
+        super().__init__(name, hp, atk, defense)
+
+
+class Character(Mob):
+    def __init__(self, name, hp, atk, defense):
+        super().__init__(name, hp, atk, defense)
+        
+
+"""
         
 
 ##classes identiques pour l'instant mais scalable si des actions spécifiques au joueur ou ennemi sont ajoutés

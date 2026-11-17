@@ -21,3 +21,10 @@ afficher les options numereotées
 def display_numbered_options(options):
     for index,option in enumerate(options,start=1):
         print(f"{index} : {option}")
+
+def format_character_info(characters):
+    formated_characters = []
+    for character in characters:
+        str = f"nom : {character["nom"] }, pv : {character["pv"]}, attaque {character["attaque"]}, defense : {character["defense"]}"
+        formated_characters.append(str)
+    return formated_characters
