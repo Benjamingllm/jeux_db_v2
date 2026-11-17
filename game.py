@@ -1,7 +1,7 @@
 
 
 from db_interaction import get_database_items,save_score
-from display import display_score,format_character_info, PSEUDO, QUIT
+from display import display_score,format_character_info,display_leaderboard, PSEUDO, QUIT
 from battle import game_loop
 from models import Character
 from config import CHARACTER_COLLECTION,MONSTER_COLLECTION
@@ -47,21 +47,10 @@ def team_not_full(team):
 
 
 
-def leaderboard():
-    pass
+def leaderboard(db):
+    display_leaderboard(db)
+    input(QUIT)
+
 
  
 
-
-"""
-
-
-
-#################### CHOIX AFFICHER LES RESULTATS#########################
-recupperer les 3meilleurs score 
-afficher les 3 meilleurs score
-
-proposer de cliquer sur une touche 
-revenir au menu 
-
-"""

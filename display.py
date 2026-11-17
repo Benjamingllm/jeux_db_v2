@@ -1,4 +1,4 @@
-
+from db_interaction import get_top_scores
 
 
 def display_numbered_options(options):
@@ -22,6 +22,11 @@ def display_events(events):
 
 def display_error_message(message):
     print("⚠️" + message)
+
+def display_leaderboard(db):
+    scores = get_top_scores(db)
+    for score in scores:
+        print(f"{score["pseudo"]} : {score["score"] } score")
 
 ### Messages et input ####
 MENU_CHOICE = "veuillez choisir une des options   "
