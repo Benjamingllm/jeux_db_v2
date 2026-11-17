@@ -30,25 +30,12 @@ recuperer le choix du joueur parmis plusieurs options
             retourner int(choix)
         afficher message d'erreur
 
-    
 
-afficher les options numereotées
-    pour index, option dans enumerate(options =  start = 1)
-        afficher f"{index} : {option}"
-    
-verifier si le choix est valide
-    si le choix est pas is_digit
-        retourner False
-    choix = int(choix)
-    if choix inferieur maximum et superieur a minimum:
-        return true
-    return false
-    
-TODO passer avec un validator
-    
-    
 
-    
+
+
+
+
 #################### CHOIX LANCER JEUX #########################
 
 #demander pseudo
@@ -114,10 +101,7 @@ choisir un monstre au hasard
     retourner vrai 
 
 
-afficher event (event)
-    pour event in events:
-        afficher event    
-        
+
     
     
 
@@ -149,13 +133,19 @@ attaque monstre :
     choix = choice (personnages vivant)
     retourner choix 
 
+    
 
-        
-
-
-            
 
     
+verifier si le choix est valide
+    si le choix est pas is_digit
+        retourner False
+    choix = int(choix)
+    if choix inferieur maximum et superieur a minimum:
+        return true
+    return false
+
+TODO passer avec un validator
 
 #################### CHOIX  quitter#########################
 quitter
@@ -163,61 +153,8 @@ quitter
 #################### CHOIX AFFICHER LES RESULTATS#########################
 recupperer les 3meilleurs score 
 afficher les 3 meilleurs score
+
 proposer de cliquer sur une touche 
 revenir au menu 
 
-
-
-
-###################################### CLASSES ##################################
-
-classe mob
-    initialisation (pv, atk,defense,nom)
-        on initialise les variables 
-
-    prendre des dégats(montant)
-        on enleve le maximum de : 1 et nombre de pv du montant d'ataque - la défense 
-        si pv <=0:
-            pv = 0
-
-        
-    est_mort
-        retourner pv inferieur ou = a 0
-
-        
-
-##classes identiques pour l'instant mais scalable si des actions spécifiques au joueur ou ennemi sont ajoutés
-
-classe Personnage(Mob)
-    initialisation
-        hérite des paramètres de mob
-
-
-classe Enemi(Mob)
-    initialisation
-        hérite des paramètres de mob
-
-    
-
-Classe Event
-    INITIALISATION 
-        cible
-        source
-
-
-class Attaque(Event):
-    INTIalisation 
-        heritage de Event
-        dégats
-        vie
-
-    methode string d'affichage des données
-
-
-class Mort(Event)
-     INTIalisation 
-            heritage de Event
-
-
-    methode string d'affichage des données
 """
