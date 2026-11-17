@@ -41,20 +41,27 @@ def play(db):
     pseudo = input("Entrez votre pseudo")
     characters = get_character(db)
     #recuperer les choix de personnages du joueurs parmis plusieures options
-    """team = []
-    options restantes = list(personanges)
-    tant que l'équipe n'est pas pleine
-        recuperer le choix du joueur parmis la liste d'options restante
-        enlever le personnage des options restantes
-        créer une instance du personnage
-        ajouter dans la team"""
+    team = create_team(characters)
+
+
+def create_team(characters):
     team = []
     remaining_options = extract_character_info(characters)
     while team_not_full(team):
         choice = get_valid_choice(format_character_info(remaining_options))
         remaining_options.pop(choice -1)
-        character = Character()
+        character_infos = remaining_options[choice -1]
+        character = Character(character_infos["nom"],character_infos["pv"],character_infos["attaque"],character_infos["defense"])
+        team.append(character)
+    return team
         
+def extract_character_info(brut_information):
+    infos = []
+    for character in brut_information:
+        del character["_id"]
+        infos.append(character)
+
+    return infos
 
 
 
