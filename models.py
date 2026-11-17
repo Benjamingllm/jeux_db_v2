@@ -26,6 +26,7 @@ class Mob:
         self.hp -= damages
         if self.hp < 0:
             self.hp = 0
+        return damages
 
 
     def is_dead(self):

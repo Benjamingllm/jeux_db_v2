@@ -11,7 +11,7 @@ def main():
         options = [texte for texte, fonction in OPTION_MENU]
         choice = get_valid_choice(options)
         OPTION_MENU[choice - 1 ][1](db)
-        close_database()
+        close_database(db)
 
 
 
@@ -41,7 +41,7 @@ def play(db):
     pseudo = input("Entrez votre pseudo")
     characters = get_database_items(db,"characters")
     team = create_team(characters)
-    monsters = get_database_items(db,"characters")
+    monsters = get_database_items(db,"monsters")
     score = game_loop(team,monsters)
     save_score(score,pseudo,db)
     display_score(score)
@@ -65,12 +65,15 @@ def game_loop(team,monsters):
 def monster_attack(team,monster):
     events = []
     character = pick_alive_character(team)
-    character.take_damage(monster.atk)
-    event = Attack(character,monster,monster.atk)
-    events.append(event)
+    damages = character.take_damage(monster.atk)
+    
     if character.is_dead():
         event = Dead(character,monster)
         events.append(event)
+        return events
+
+    event = Attack(character,monster,damages)
+    events.append(event)
     return events
 
 
@@ -85,13 +88,13 @@ def team_attack(team,monster):
 
     events = []
     for character in alive_team(team) :
-        monster.take_damage(character.atk)
-        event = Attack(monster,character,character.atk)
-        events.append(event)
+        damages = monster.take_damage(character.atk)
         if monster.is_dead():
             event = Dead(monster,character)
             events.append(event)
-
+            return events
+        event = Attack(monster,character,damages)
+        events.append(event)    
     return events
 
 def alive_team(team):
@@ -113,9 +116,9 @@ def create_team(characters):
     team = []
     remaining_options = extract_mob_info(characters)
     while team_not_full(team):
-        choice = get_valid_choice(format_character_info(remaining_options))
-        remaining_options.pop(choice -1)
+        choice = get_valid_choice(format_character_info(remaining_options)) 
         character_infos = remaining_options[choice -1]
+        remaining_options.pop(choice -1)
         character = Character(character_infos["nom"],character_infos["pv"],character_infos["attaque"],character_infos["defense"])
         team.append(character)
     return team
@@ -144,7 +147,7 @@ def team_not_full(team):
 def leaderboard():
     pass
 
-def quitt(db):
+def quitt():
     exit()
     
 
@@ -158,7 +161,7 @@ def quitt(db):
 OPTION_MENU = [
     ("Jouer", play),
     ("Voir le classement" , leaderboard),
-    ("Quitter", quitt),
+    ("Quitter", lambda db : quitt()),
 ]
 TEAM_LENGHT = 3
 
@@ -168,35 +171,6 @@ main()
 
 
 """
-
-
-
-
-#################### CHOIX LANCER JEUX #########################
-
-
-
-
-
-####
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-
-
-
 
 
 
