@@ -1,10 +1,10 @@
 from pymongo import MongoClient
-
+from config import CHARACTER_COLLECTION, MONSTER_COLLECTION,DB_NAME
 client = MongoClient("mongodb://localhost:27017/")
-db = client["Game"]
+db = client[DB_NAME]
 
 def insert_characters():
-    characters = db['characters']
+    characters = db[CHARACTER_COLLECTION]
     characters.insert_many([
     {"nom": "Bruno le Bodybuilder",     "pv": 120, "attaque": 24, "defense": 14},
     {"nom": "Clara la Crossfiteuse",    "pv": 100, "attaque": 20, "defense": 12},
@@ -20,7 +20,7 @@ def insert_characters():
 
 
 def insert_monsters():
-    monsters = db["monsters"]
+    monsters = db[MONSTER_COLLECTION]
     monsters.insert_many([
     {"nom": "La Courbature",                  "pv": 40,  "attaque": 14, "defense": 4},
     {"nom": "Les Pompes Enragées",            "pv": 50,  "attaque": 17, "defense": 7},

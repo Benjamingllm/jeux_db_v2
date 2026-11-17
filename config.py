@@ -1,0 +1,5 @@
+TEAM_LENGTH = 3
+CHARACTER_COLLECTION = "characters"
+MONSTER_COLLECTION = "monsters"
+DB_NAME = "Game"
+SCORE_COLLECTION = "scores"

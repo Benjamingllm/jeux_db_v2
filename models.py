@@ -32,6 +32,12 @@ class Mob:
     def is_dead(self):
         return self.hp == 0
 
+    @classmethod
+    def create_from_dict(cls,data):
+        return cls(data["nom"],data["pv"],data["attaque"], data["defense"])
+
+
+
 class Monster(Mob):
     def __init__(self, name, hp, atk, defense):
         super().__init__(name, hp, atk, defense)
