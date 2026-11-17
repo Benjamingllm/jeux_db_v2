@@ -29,3 +29,10 @@ def format_character_info(characters):
         str = f"nom : {character["nom"] }, pv : {character["pv"]}, attaque {character["attaque"]}, defense : {character["defense"]}"
         formated_characters.append(str)
     return formated_characters
+
+def display_score(score):
+    print(score)
+
+def display_events(events):
+    for event in events:
+        print(event)

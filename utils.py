@@ -10,14 +10,18 @@ def close_database():
     client = MongoClient("mongodb://localhost:27017")
     client.close()
 
-def get_character(db):
-    character_collection = "characters"
-    characters_db = get_collection(db,character_collection).find()
-    characters = []
-    for character in characters_db:
-        characters.append(character) 
-    return characters
+def get_database_items(db,name):
+    collection  = get_collection(db,name).find()
+    items = []
+    for item in collection:
+        items.append(item) 
+    return items
+
+
 
 
 def get_collection(db,collection):
     return db[collection]
+
+def save_score(score,pseudo,db):
+    pass

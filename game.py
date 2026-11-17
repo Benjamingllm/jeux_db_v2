@@ -1,10 +1,10 @@
 
 
-from utils import open_database , close_database,get_character
-from display import display_numbered_options, format_character_info
+from utils import open_database , close_database,get_database_items,save_score
+from display import display_numbered_options, format_character_info,display_score, display_events
 from sys import exit
-from models import Character, Monster
-
+from models import Character, Monster, Attack, Dead
+import random
 def main():
     while True :
         db = open_database()
@@ -39,14 +39,79 @@ def is_valid_choice(choice,minimum,maximum):
 
 def play(db):
     pseudo = input("Entrez votre pseudo")
-    characters = get_character(db)
-    #recuperer les choix de personnages du joueurs parmis plusieures options
+    characters = get_database_items(db,"characters")
     team = create_team(characters)
+    monsters = get_database_items(db,"characters")
+    score = game_loop(team,monsters)
+    save_score(score,pseudo,db)
+    display_score(score)
+    input("appuyez sur entrer pour quitter")
+    return
+
+
+def game_loop(team,monsters):
+
+    score = 0
+    while len(alive_team(team))  > 0:
+        monster = pick_new_monster(extract_mob_info(monsters))
+        while not monster.is_dead() and len(alive_team(team))  > 0 :
+            events = team_attack(team,monster)
+            events.extend(monster_attack(team,monster))
+            score += 1
+            display_events(events)
+    return score
+
+
+def monster_attack(team,monster):
+    events = []
+    character = pick_alive_character(team)
+    character.take_damage(monster.atk)
+    event = Attack(character,monster,monster.atk)
+    events.append(event)
+    if character.is_dead():
+        event = Dead(character,monster)
+        events.append(event)
+    return events
+
+
+
+
+def pick_alive_character(team):
+    return random.choice(alive_team(team))
+
+    
+
+def team_attack(team,monster):
+
+    events = []
+    for character in alive_team(team) :
+        monster.take_damage(character.atk)
+        event = Attack(monster,character,character.atk)
+        events.append(event)
+        if monster.is_dead():
+            event = Dead(monster,character)
+            events.append(event)
+
+    return events
+
+def alive_team(team):
+    return list(filter(lambda p: not p.is_dead(), team) )
+
+def pick_new_monster(monsters):
+    random_monster = random.choice(monsters)
+    name, hp, atk, defense = random_monster.values()
+    monster_instance = Monster(name,hp,atk,defense)
+    return monster_instance
+    
+
+
+
+
 
 
 def create_team(characters):
     team = []
-    remaining_options = extract_character_info(characters)
+    remaining_options = extract_mob_info(characters)
     while team_not_full(team):
         choice = get_valid_choice(format_character_info(remaining_options))
         remaining_options.pop(choice -1)
@@ -54,13 +119,17 @@ def create_team(characters):
         character = Character(character_infos["nom"],character_infos["pv"],character_infos["attaque"],character_infos["defense"])
         team.append(character)
     return team
-        
-def extract_character_info(brut_information):
-    infos = []
-    for character in brut_information:
-        del character["_id"]
-        infos.append(character)
 
+
+
+
+
+        
+def extract_mob_info(brut_information):
+    infos = [
+        {cle: valeur for cle, valeur in character.items() if cle != "_id"}
+        for character in brut_information
+    ]
     return infos
 
 
@@ -105,60 +174,21 @@ main()
 
 #################### CHOIX LANCER JEUX #########################
 
-#demander pseudo
-personnages recuperer les personnages
 
 
-monstres = recuperer les monstres
-#score =  boucle de jeux
-sauvegarde score
-#afficher le score 
-#proposer de cliquer sur une touche
-# retourner rien( pour stop la fonction et continuer dans la boucle menu )
+
 
 ####
 
 
-recuperer les monstres
-    recuperer les monstres dans la db 
-    les stocker dans une liste 
-    les retourner
-
-recup les personnages
-    recuperer les personnages dans la db 
-    les stocker dans une liste 
-    les retourner
 
 
 
 
-choisir un monstre au hasard
-    on prend un monstre au hasard
-    on crée une nouvelle instance de monstre et on la retourne
-
-    
 
 
 
-#### boucle de jeux ####
-    boucle de jeux
-    score = 0
-    tant que la team n'est pas morte :
-        choisir un nouveau monstre
-        tant que le monstre n'es pas mort :
-            event = attaque equipe
-            ajouter attaque monstre a event
-            score += 1
-            afficher les event
 
-    retourner score
-
-
-#team morte 
-    pour personnages dans la team:
-        si personanges est vivant
-        retourner false
-    retourner vrai 
 
 
 
@@ -166,40 +196,9 @@ choisir un monstre au hasard
     
 
 
-attaque equipe
-    event = []
-    pour personnage dans la team:
-        personnage attaque le monstre 
-        ajouter l'event a la liste
-        si monstre est mort :
-            ajouter l'event a la liste
-            break
-    retourner event 
-
-attaque monstre :
-    event = []
-    choisi un personnage vivant 
-    le monstre attaque le personnage
-    ajouter l'event a la liste
-    si le personnage est mort :
-        ajouter l'event a la liste
-    retourne event
-
-
-#choisir un personnages vivant
-    personnages vivant = []
-    pour personnages dans la team:
-        si personnage est vivant on l'ajoute a personnages vivant
-    choix = choice (personnages vivant)
-    retourner choix 
-
-    
 
 
 
-
-#################### CHOIX  quitter#########################
-quitter
 
 #################### CHOIX AFFICHER LES RESULTATS#########################
 recupperer les 3meilleurs score 

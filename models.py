@@ -23,13 +23,13 @@ class Mob:
 
     def take_damage(self,amount):
         damages = max(1, amount - self.defense)
-        self.pv -= damages
-        if self.pv < 0:
-            self.pv = 0
+        self.hp -= damages
+        if self.hp < 0:
+            self.hp = 0
 
 
     def is_dead(self):
-        return self.pv == 0
+        return self.hp == 0
 
 class Monster(Mob):
     def __init__(self, name, hp, atk, defense):
@@ -41,40 +41,23 @@ class Character(Mob):
         super().__init__(name, hp, atk, defense)
         
 
-"""
-        
+class Event:
+    def __init__(self,target,source):
+        self.target = target
+        self.source = source
 
-##classes identiques pour l'instant mais scalable si des actions spécifiques au joueur ou ennemi sont ajoutés
+class Attack(Event):
+    def __init__(self, target, source,damage):
+        super().__init__(target, source)
+        self.damage = damage
+        self.hp = target.hp
 
-classe Personnage(Mob)
-    initialisation
-        hérite des paramètres de mob
+    def __str__(self):
+        return f"{self.source.name} inflige {self.damage} à {self.target.name}, il lui reste {self.hp} pv"
 
+class Dead(Event):
+    def __init__(self, target, source):
+        super().__init__(target, source)
 
-classe Enemi(Mob)
-    initialisation
-        hérite des paramètres de mob
-
-    
-
-Classe Event
-    INITIALISATION 
-        cible
-        source
-
-
-class Attaque(Event):
-    INTIalisation 
-        heritage de Event
-        dégats
-        vie
-
-    methode string d'affichage des données
-
-
-class Mort(Event)
-     INTIalisation 
-            heritage de Event
-
-
-    methode string d'affichage des données"""
+    def __str__(self):
+        return f"{self.source.name} a tué {self.target.name}"
