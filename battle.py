@@ -11,8 +11,9 @@ def game_loop(team,monsters):
     while is_team_alive(team):
         monster = pick_new_monster(monsters)
         while not monster.is_dead() and is_team_alive(team) :
-            events = team_attack(team,monster)
-            events += monster_attack(team,monster)
+            events = monster_attack(team,monster)
+            events += team_attack(team,monster)
+            
             score += 1
             display_fight_info(alive_team(team),monster,events,is_team_alive(team),score)
     return score

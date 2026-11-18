@@ -24,7 +24,7 @@ def display_round(round):
     return pannel
     
 def clear_screen():
-    print("\033[H\033[2J\033[3J", end="", flush=True)
+    print("\033[H\033[2J\033[3J")
 
 
 def display_leaderboard(db):
@@ -34,6 +34,8 @@ def display_leaderboard(db):
         lines.append(f"{score["pseudo"]} : {score["score"] } points")
     text = "\n".join(lines)
     panel = build_panel(LEADERBOARD_STYLE,text)
+    clear_screen()
+
     console.print(panel)
 
 def build_fight_panel(*items,style):
@@ -56,6 +58,7 @@ def display_fight_info(team,monster,events,is_team_alive,score):
     
     console.print(*display)
     sleep(ROUND_TIME_GAP)
+
 
 
 def display_loose(score):
