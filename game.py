@@ -1,7 +1,7 @@
 
 
 from db_interaction import get_database_items,save_score  # noqa: I001
-from display import display_score,format_character_info,display_leaderboard
+from display import format_character_info,display_leaderboard,clear_screen
 from battle import game_loop
 from models import Character
 from config import CHARACTER_COLLECTION,MONSTER_COLLECTION
@@ -21,8 +21,8 @@ def play(db):
     monsters = get_database_items(db,MONSTER_COLLECTION)
     score = game_loop(team,monsters)
     save_score(score,pseudo,db)
-    display_score(score)
     menu_input()
+    clear_screen()
 
 
 
