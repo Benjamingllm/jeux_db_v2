@@ -1,11 +1,11 @@
 
 
-from db_interaction import get_database_items,save_score
-from display import display_score,format_character_info,display_leaderboard, PSEUDO, QUIT
+from db_interaction import get_database_items,save_score  # noqa: I001
+from display import display_score,format_character_info,display_leaderboard
 from battle import game_loop
 from models import Character
 from config import CHARACTER_COLLECTION,MONSTER_COLLECTION
-from inputs import get_valid_choice
+from inputs import get_valid_choice, ask_pseudo,quit_input
 from config import TEAM_LENGTH
 
 
@@ -15,14 +15,14 @@ from config import TEAM_LENGTH
 
 
 def play(db):
-    pseudo = input(PSEUDO)
+    pseudo = ask_pseudo()
     characters = get_database_items(db,CHARACTER_COLLECTION)
     team = create_team(characters)
     monsters = get_database_items(db,MONSTER_COLLECTION)
     score = game_loop(team,monsters)
     save_score(score,pseudo,db)
     display_score(score)
-    input(QUIT)
+    quit_input()
 
 
 
@@ -49,7 +49,7 @@ def team_not_full(team):
 
 def leaderboard(db):
     display_leaderboard(db)
-    input(QUIT)
+    quit_input()
 
 
  

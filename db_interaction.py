@@ -1,4 +1,4 @@
-from pymongo import MongoClient
+from pymongo import MongoClient  # noqa: I001
 from config import SCORE_COLLECTION,DB_NAME,SCORE_LIMIT
 def open_database():
     client = MongoClient("mongodb://localhost:27017/")

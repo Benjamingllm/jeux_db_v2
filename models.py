@@ -1,18 +1,4 @@
-"""###################################### CLASSES ##################################
 
-classe mob
-    initialisation (pv, atk,defense,nom)
-        on initialise les variables 
-
-    prendre des dégats(montant)
-        on enleve le maximum de : 1 et nombre de pv du montant d'ataque - la défense 
-        si pv <=0:
-            pv = 0
-
-        
-    est_mort
-        retourner pv inferieur ou = a 0
-"""
 
 class Mob:
     def __init__(self,name,hp,atk,defense):
@@ -24,7 +10,7 @@ class Mob:
     def take_damage(self,amount):
         damages = max(1, amount - self.defense)
         self.hp -= damages
-        if self.hp < 0:
+        if self.hp < 0:  # noqa: PLR1730
             self.hp = 0
         return damages
 

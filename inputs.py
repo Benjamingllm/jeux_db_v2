@@ -1,4 +1,4 @@
-from display import display_numbered_options, display_error_message,CHOICE_ERROR,MENU_CHOICE
+from display import display_numbered_options, display_error_message,CHOICE_ERROR,MENU_CHOICE,PSEUDO,MENU # noqa: I001
 from verif import is_valid_choice
 
 def get_valid_choice(options):
@@ -9,5 +9,8 @@ def get_valid_choice(options):
             return int(choice)
         display_error_message(CHOICE_ERROR)
 
+def ask_pseudo():
+    return input(PSEUDO)
 
-
+def menu_input():
+    input(MENU)
