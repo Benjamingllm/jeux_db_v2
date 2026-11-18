@@ -10,3 +10,4 @@ LEADERBOARD_STYLE = {"title" : "Leaderboard","style": "cyan","border_style" : "w
 TEAM_PANEL_STYLE = {"title" : "team", "style" : "green1"}
 MONSTER_PANEL_STYLE = {"title" : "monster", "style" : "red"}
 EVENT_PANEL_STYLE = {"title" : "Déroulé du combat", "style" : "white"}
+LOOSE_PANNEL_STYLE = {"style" : "bold red"}

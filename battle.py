@@ -15,7 +15,7 @@ def game_loop(team,monsters):
             events = team_attack(team,monster)
             events += monster_attack(team,monster)
             score += 1
-            display_fight_info(alive_team(team),monster,events)
+            display_fight_info(alive_team(team),monster,events,is_team_alive(team),score)
     return score
 
 

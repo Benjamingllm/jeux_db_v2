@@ -1,6 +1,6 @@
 from db_interaction import get_top_scores  # noqa: I001
 from time import sleep
-from config import ROUND_TIME_GAP,LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE
+from config import ROUND_TIME_GAP,LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE
 from rich.panel import Panel
 from rich.align import Align
 from rich.table import Table
@@ -45,9 +45,23 @@ def build_fight_panel(*items,style):
     return build_panel(style, text)
 
 
-def display_fight_info(team,monster,events):
-    
+def display_fight_info(team,monster,events,is_team_alive,score):
     console.clear()
+    if is_team_alive:
+        display = display_rounds_info(team,monster,events)
+    else:
+        display = display_loose(score)
+    
+    console.print(display)
+
+def display_loose(score):
+    score_text = f"Score : {score}"
+    text = f"{LOOSE_MESSAGE}\n{score_text}"
+    loose_pannel = build_panel(LOOSE_PANNEL_STYLE,text)
+    return loose_pannel   
+
+
+def display_rounds_info(team,monster,events):
     team_panel = build_fight_panel(*team, style = TEAM_PANEL_STYLE)
     monster_panel = build_fight_panel(monster, style = MONSTER_PANEL_STYLE)
     events_panel = build_fight_panel(*events, style = EVENT_PANEL_STYLE)
@@ -55,8 +69,7 @@ def display_fight_info(team,monster,events):
     pannels = [team_panel, events_panel, monster_panel]
     grid.add_row(*pannels)
     format_height(grid,pannels)
-    console.print(grid)
-
+    return grid
 
 def create_grid():
     grid = Table.grid(expand=True)
@@ -78,3 +91,4 @@ def format_height(grid, pannels):
 MENU_CHOICE = "veuillez choisir une des options   "
 PSEUDO = "Entrez votre pseudo"
 MENU = "appuyez sur entrer pour revenir au menu"
+LOOSE_MESSAGE = "Toute votre équipe est morte "
