@@ -6,3 +6,4 @@ SCORE_COLLECTION = "scores"
 SCORE_LIMIT = 3
 EVENT_TIME_GAP = 1
 ROUND_TIME_GAP = 3
+LEADERBOARD_STYLE = {"title" : "Leaderboard","style": "cyan","border_style" : "white"}

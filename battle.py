@@ -4,7 +4,6 @@ from display import  display_events,display_next_round ,display_monster_spawn # 
 
 from models import  Monster, Attack, Dead
 import random
-#TODO implementer flèche avec inquirerer.py 
 #TODO reach pour l'affichage 
 
 def game_loop(team,monsters):
