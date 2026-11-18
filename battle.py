@@ -1,23 +1,21 @@
 
 
-from display import  display_events,display_next_round ,display_monster_spawn # noqa: I001
+from display import  display_fight_info,display_next_round  # noqa: I001
 
 from models import  Monster, Attack, Dead
 import random
-#TODO reach pour l'affichage 
 
 def game_loop(team,monsters):
     
     score = 0
     while is_team_alive(team):
         monster = pick_new_monster(monsters)
-        display_monster_spawn(monster)
         while not monster.is_dead() and is_team_alive(team) :
+            display_next_round(score +1 )
             events = team_attack(team,monster)
             events += monster_attack(team,monster)
             score += 1
-            display_events(events)
-            display_next_round(score +1 )
+            display_fight_info(alive_team(team),monster,events)
     return score
 
 

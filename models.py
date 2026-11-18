@@ -1,5 +1,4 @@
 
-
 class Mob:
     def __init__(self,name,hp,atk,defense):
         self.name = name
@@ -22,17 +21,25 @@ class Mob:
     def create_from_dict(cls,data):
         return cls(data["nom"],data["pv"],data["attaque"], data["defense"])
 
+    def __str__(self):
+        return f"{self.name} : {self.hp} pv"
+
 
 
 class Monster(Mob):
     def __init__(self, name, hp, atk, defense):
         super().__init__(name, hp, atk, defense)
 
+    def __str__(self):
+        return super().__str__()
+
 
 class Character(Mob):
     def __init__(self, name, hp, atk, defense):
         super().__init__(name, hp, atk, defense)
-        
+
+    def __str__(self):
+        return super().__str__()
 
 class Event:
     def __init__(self,target,source):

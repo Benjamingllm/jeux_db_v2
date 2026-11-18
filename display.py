@@ -1,10 +1,12 @@
 from db_interaction import get_top_scores  # noqa: I001
 from time import sleep
-from config import EVENT_TIME_GAP,ROUND_TIME_GAP,LEADERBOARD_STYLE
-from rich import print
+from config import ROUND_TIME_GAP,LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE
 from rich.panel import Panel
 from rich.align import Align
+from rich.table import Table
+from rich.console import Console
 
+console = Console()
 
 def format_character_info(characters):
     formated_characters = []
@@ -14,23 +16,16 @@ def format_character_info(characters):
     return formated_characters
 
 def display_score(score):
-    print(score)
+    console.print(score)
     
-def display_events(events):
-    for event in events:
-        print(event)
-        sleep(EVENT_TIME_GAP)
+
 
 def display_next_round(round):
-    print(f'passage au round {round}')
     sleep(ROUND_TIME_GAP)
+    console.print(f'passage au round {round}')
+    
 
 
-def display_error_message(message):
-    print(f"⚠️ {message}" )
-
-def display_monster_spawn(monster):
-    print(f"{monster.name} apparait")
 
 def display_leaderboard(db):
     scores = get_top_scores(db)
@@ -38,15 +33,48 @@ def display_leaderboard(db):
     for score in scores:
         lines.append(f"{score["pseudo"]} : {score["score"] } points")
     text = "\n".join(lines)
-    display_panel(LEADERBOARD_STYLE,text)
+    panel = build_panel(LEADERBOARD_STYLE,text)
+    console.print(panel)
 
-def display_panel(style,text):
-    panel = Panel(Align.center(text),**style)
-    print(panel)
+def build_fight_panel(*items,style):
+    lines = []
+    for item in items:
+        lines.append(str(item))
+    text = "\n".join(lines)
+    
+    return build_panel(style, text)
 
+
+def display_fight_info(team,monster,events):
+    
+    console.clear()
+    team_panel = build_fight_panel(*team, style = TEAM_PANEL_STYLE)
+    monster_panel = build_fight_panel(monster, style = MONSTER_PANEL_STYLE)
+    events_panel = build_fight_panel(*events, style = EVENT_PANEL_STYLE)
+    grid = create_grid()
+    pannels = [team_panel, events_panel, monster_panel]
+    grid.add_row(*pannels)
+    format_height(grid,pannels)
+    console.print(grid)
+
+
+def create_grid():
+    grid = Table.grid(expand=True)
+    grid.add_column(ratio =1)
+    grid.add_column(ratio =2)
+    grid.add_column(ratio =1)
+    return grid
+
+def build_panel(style,text):
+    panel = Panel(Align.center(text,vertical = "middle"),**style,)
+    return panel
+
+def format_height(grid, pannels):
+    height = len(console.render_lines(grid, console.options))
+    for pannel in pannels:
+        pannel.height = height
 
 ### Messages et message d'input ####
 MENU_CHOICE = "veuillez choisir une des options   "
 PSEUDO = "Entrez votre pseudo"
 MENU = "appuyez sur entrer pour revenir au menu"
-CHOICE_ERROR = "Choix invalide"
