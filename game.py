@@ -5,7 +5,7 @@ from display import display_score,format_character_info,display_leaderboard
 from battle import game_loop
 from models import Character
 from config import CHARACTER_COLLECTION,MONSTER_COLLECTION
-from inputs import get_valid_choice, ask_pseudo,quit_input
+from inputs import get_valid_choice, ask_pseudo,menu_input
 from config import TEAM_LENGTH
 
 
@@ -22,7 +22,7 @@ def play(db):
     score = game_loop(team,monsters)
     save_score(score,pseudo,db)
     display_score(score)
-    quit_input()
+    menu_input()
 
 
 
@@ -35,8 +35,8 @@ def create_team(characters):
     remaining_options = list(characters)
     while team_not_full(team):
         choice = get_valid_choice(format_character_info(remaining_options)) 
-        character_infos = remaining_options[choice -1]
-        remaining_options.pop(choice -1)
+        character_infos = remaining_options[choice]
+        remaining_options.pop(choice)
         character = Character.create_from_dict(character_infos)
         team.append(character)
     return team
@@ -49,7 +49,7 @@ def team_not_full(team):
 
 def leaderboard(db):
     display_leaderboard(db)
-    quit_input()
+    menu_input()
 
 
  

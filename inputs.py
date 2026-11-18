@@ -1,13 +1,15 @@
-from display import display_numbered_options, display_error_message,CHOICE_ERROR,MENU_CHOICE,PSEUDO,MENU # noqa: I001
-from verif import is_valid_choice
+from display import MENU_CHOICE,PSEUDO,MENU # noqa: I001
+from InquirerPy.base.control import Choice
+from InquirerPy import inquirer
+
 
 def get_valid_choice(options):
     while True:
-        display_numbered_options(options)
-        choice = input(MENU_CHOICE)
-        if is_valid_choice(choice, 1, len(options)):
-            return int(choice)
-        display_error_message(CHOICE_ERROR)
+        choice = inquirer.select(
+            message = MENU_CHOICE ,
+            choices = [Choice(value = index, name = option) for index,option in enumerate(options)]
+            ).execute()
+        return int(choice)
 
 def ask_pseudo():
     return input(PSEUDO)

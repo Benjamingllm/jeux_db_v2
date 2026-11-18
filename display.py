@@ -2,10 +2,6 @@ from db_interaction import get_top_scores  # noqa: I001
 from time import sleep
 from config import EVENT_TIME_GAP,ROUND_TIME_GAP
 
-def display_numbered_options(options):
-    for index,option in enumerate(options,start=1):
-        print(f"{index} : {option}")
-
 
 def format_character_info(characters):
     formated_characters = []

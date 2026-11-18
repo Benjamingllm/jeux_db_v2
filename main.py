@@ -18,7 +18,7 @@ def menu():
         db = open_database()
         options = [texte for texte, fonction in OPTION_MENU]
         choice = get_valid_choice(options)
-        OPTION_MENU[choice - 1 ][1](db)
+        OPTION_MENU[choice ][1](db)
         close_database(db)
 
 
