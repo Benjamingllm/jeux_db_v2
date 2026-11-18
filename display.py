@@ -1,6 +1,6 @@
 from db_interaction import get_top_scores  # noqa: I001
 from time import sleep
-from config import ROUND_TIME_GAP,LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE
+from config import ROUND_TIME_GAP,LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE,ROUND_PANNEL_STYLE
 from rich.panel import Panel
 from rich.align import Align
 from rich.table import Table
@@ -15,16 +15,16 @@ def format_character_info(characters):
         formated_characters.append(string)
     return formated_characters
 
-def display_score(score):
-    console.print(score)
+
+
+
+def display_round(round):
+    text = f"Round {round}"
+    pannel = build_panel(ROUND_PANNEL_STYLE,text)
+    return pannel
     
-
-
-def display_next_round(round):
-    sleep(ROUND_TIME_GAP)
-    console.print(f'passage au round {round}')
-    
-
+def clear_screen():
+    print("\033[H\033[2J\033[3J", end="", flush=True)
 
 
 def display_leaderboard(db):
@@ -46,13 +46,17 @@ def build_fight_panel(*items,style):
 
 
 def display_fight_info(team,monster,events,is_team_alive,score):
-    console.clear()
+    clear_screen()
+
     if is_team_alive:
-        display = display_rounds_info(team,monster,events)
+
+        display = [display_round(score ) , display_rounds_info(team,monster,events)]
     else:
-        display = display_loose(score)
+        display = [display_loose(score)]
     
-    console.print(display)
+    console.print(*display)
+    sleep(ROUND_TIME_GAP)
+
 
 def display_loose(score):
     score_text = f"Score : {score}"

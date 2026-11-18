@@ -11,3 +11,4 @@ TEAM_PANEL_STYLE = {"title" : "team", "style" : "green1"}
 MONSTER_PANEL_STYLE = {"title" : "monster", "style" : "red"}
 EVENT_PANEL_STYLE = {"title" : "Déroulé du combat", "style" : "white"}
 LOOSE_PANNEL_STYLE = {"style" : "bold red"}
+ROUND_PANNEL_STYLE = {"style": "bold cyan"}
