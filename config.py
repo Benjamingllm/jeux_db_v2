@@ -33,5 +33,7 @@ MENU_PANEL_STYLE = {
     "subtitle": "[dim]↑↓ · Entrée[/]",        
     "subtitle_align": "right",
     "padding": (1, 2),                        
-    "expand": False,                          #
+    "expand": False,                          
 }
+STAT_PANEL_STYLE = {"title" : "personnage", "style" : "green1"}
+

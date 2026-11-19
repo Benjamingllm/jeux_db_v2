@@ -8,19 +8,19 @@ from config import ROUND_TIME_GAP
 from menu import open_menu
 
 
-def game_loop(team,monsters,items):
+def game_loop(team,monsters,items,player):
     
-    score = 0
-    hotkeys = {"m": lambda: open_menu(team)}
+
+    hotkeys = {"m": lambda: open_menu(team,player)}
     while is_team_alive(team):
         monster = pick_new_monster(monsters)
         while not monster.is_dead() and is_team_alive(team) :
             events = monster_attack(team,monster)
-            events += team_attack(team,monster,items)
-            score += 1
-            display_fight_info(alive_team(team),monster,events,is_team_alive(team),score)
+            events += team_attack(team,monster,items,player)
+            player.score+=1
+            display_fight_info(alive_team(team),monster,events,is_team_alive(team),player.score)
             wait(ROUND_TIME_GAP,hotkeys)
-    return score
+
 
 
 def monster_attack(team,monster):
@@ -48,7 +48,7 @@ def pick_alive_character(team):
 
     
 
-def team_attack(team,monster,items):
+def team_attack(team,monster,items,player):
 
     events = []
     
@@ -56,24 +56,20 @@ def team_attack(team,monster,items):
         damages = monster.take_damage(character.atk)
         if monster.is_dead():
             events.append(Dead(monster,character))
-            events.append(Drop(character,monster,drop_item(monster,team,items)))
+            events.append(Drop(character,monster,drop_item(monster,player,items)))
             return events
         event = Attack(monster,character,damages)
         events.append(event)    
     return events
 
-def drop_item(monster,team,items):
+def drop_item(monster,player,items):
     rarity_dict = monster.rarity_dict
     item = pick_random_item(rarity_dict,items)
     item_instance = Item(**item)
-    character = pick_alive_character(team)
-    add_item(item_instance,character)
+    player.add_item(item_instance)
     return item_instance
 
-def add_item(item,character):
-    if character.is_item_pickable(item):
-        character.add_item(item)
-        item.is_picked = True
+
 
 
 def pick_random_item(rarity_dict,items):

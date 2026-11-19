@@ -1,5 +1,5 @@
 from db_interaction import get_top_scores  # noqa: I001
-from config import LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE,ROUND_PANNEL_STYLE,MENU_PANEL_STYLE,LOOSE_MESSAGE,SELECTED_OPTION_STYLE
+from config import LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE,ROUND_PANNEL_STYLE,MENU_PANEL_STYLE,LOOSE_MESSAGE,SELECTED_OPTION_STYLE,STAT_PANEL_STYLE
 from rich.panel import Panel
 from rich.align import Align
 from rich.table import Table
@@ -26,8 +26,7 @@ def display_round(round):
     
 
 
-def display_leaderboard(db):
-    scores = get_top_scores(db)
+def display_leaderboard(scores):
     lines = []
     for score in scores:
         lines.append(f"{score["pseudo"]} : {score["score"] } points")
@@ -45,6 +44,17 @@ def build_fight_panel(*items,style):
     
     return build_panel(style, text)
 
+def build_stat_panel(character):
+    lines = []
+    for nom,valeur in vars(character).items():
+        if nom == "inventory":
+            continue
+        string = f"{nom} : {valeur}"
+        lines.append(string)
+    text =  "\n".join(lines)
+    
+    panel = build_panel(STAT_PANEL_STYLE,text)
+    return panel
 
 def build_menu_panel(state,title):
     text = build_menu_text(state)

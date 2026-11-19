@@ -4,7 +4,7 @@ import time
 
 
 term = Terminal()
-def wait(seconds,hotkey,**args):
+def wait(seconds,hotkey):
     end = time.time() + seconds
     while True:
         remaining = end - time.time()
@@ -15,8 +15,12 @@ def wait(seconds,hotkey,**args):
 
         action = hotkey.get(k) or hotkey.get(k.name)
         if action:
-            action(**args)
+            action()
             return          
 
 def clear_screen():
     print("\033[H\033[2J\033[3J")
+
+
+def format_names(objects):
+    return [object.name for object in objects] or ["(vide)"]

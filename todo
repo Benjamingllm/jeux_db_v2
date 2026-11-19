@@ -1,2 +1,8 @@
 TODO systeme equiper inventaire avec menu 
+    afficher la grid d'inventaire
+        afficher le pannel stat
+        afficher le pannel item
+            gerer le changement inventaire/ equipés
+            afficher pannel inventaire 
+            afficher pannel equipés
 TODO save game 

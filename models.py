@@ -59,9 +59,30 @@ class Character(Mob):
         self.defense += item.defense
         self.inventory.append(item)
 
-    def is_item_pickable(self,item):
-        return item not in self.inventory
 
+
+    def remove_item(self,item):
+        self.defense -= item.defense
+        self.atk -= item.atk
+        self.inventory.remove(item)
+
+    def can_recieve(self,item):
+            return item not in self.inventory
+
+class Player:
+    def __init__(self,score,pseudo,inventory):
+        self.score = score
+        self.pseudo = pseudo
+        self.inventory = inventory
+
+    def add_item(self,item):
+        self.inventory.append(item)
+
+    def remove_item(self,item):
+        self.inventory.remove(item)
+
+    def can_recieve(self,item):
+        return True
 
         
     
@@ -94,11 +115,7 @@ class Drop(Event):
 
 
     def __str__(self):
-        if self.item.is_picked:
-            string = f"{self.source.name} a dropé l'item {self.item.rarity} : {self.item.name}, {self.target.name} l'a ramassé"
-        else:
-            string = "tout vos personnages ont déja cet item il reste par terre"
-        return string
+        return f"{self.item.name} a été dropé par {self.source.name} il a été ajouté a l'inventaire"
 class Item:
     def __init__(self,name,type,rarity,atk,defense):
         self.name = name
@@ -112,5 +129,27 @@ class Item:
         return isinstance(value, Item) and self.name == value.name
 
 
+class  InventoryView:
+    def __init__(self, title,owner,target):
+
+        self.title = title
+        self.owner = owner
+        self.target = target
+
+    def get_items(self):
+        return self.owner.inventory
+
+    def on_enter(self,item):
+        if not self.target.can_recieve(item):
+            return
+        self.owner.remove_item(item)
+        self.target.add_item(item)
+
+
+
+
+        
+
+    
 
 
