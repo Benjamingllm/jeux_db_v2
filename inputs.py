@@ -5,12 +5,11 @@ from InquirerPy import inquirer
 
 def get_valid_choice(options):
     clear_screen()
-    while True:
-        choice = inquirer.select(
-            message = MENU_CHOICE ,
-            choices = [Choice(value = index, name = option) for index,option in enumerate(options)]
-            ).execute()
-        return int(choice)
+    choice = inquirer.select(
+        message = MENU_CHOICE ,
+        choices = [Choice(value = index, name = option) for index,option in enumerate(options)]
+        ).execute()
+    return int(choice)
 
 def ask_pseudo():
     clear_screen()
