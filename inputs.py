@@ -1,7 +1,7 @@
 from display import MENU_CHOICE,PSEUDO,MENU,clear_screen # noqa: I001
 from InquirerPy.base.control import Choice
 from InquirerPy import inquirer
-
+import readchar
 
 def get_valid_choice(options):
     clear_screen()
@@ -17,3 +17,4 @@ def ask_pseudo():
 
 def menu_input():
     input(MENU)
+
