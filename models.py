@@ -4,7 +4,8 @@ class Mob:
         self.name = name
         self.hp = hp
         self.atk = atk
-        self.defense = defense
+        self.base_defense = defense
+        self.defense = self.base_defense
 
     def take_damage(self,amount):
         damages = max(1, amount - self.defense)
@@ -37,6 +38,7 @@ class Monster(Mob):
 class Character(Mob):
     def __init__(self, name, hp, atk, defense):
         super().__init__(name, hp, atk, defense)
+        self.inventory = []
 
     def __str__(self):
         return super().__str__()
@@ -61,3 +63,20 @@ class Dead(Event):
 
     def __str__(self):
         return f"{self.source.name} a tué {self.target.name}"
+
+
+class Item:
+    def __init__(self,name,rarity,atk,defense,type):
+        self.name = name
+        self.rarity = rarity
+        self.atk = atk
+        self.defense = defense
+        self.type = type
+
+    def add_to_hero(self,hero):
+        hero.atk += self.atk
+        hero.defense += self.defense
+        hero.inventory.append(self)
+
+
+        
