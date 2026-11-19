@@ -1,5 +1,5 @@
 from pymongo import MongoClient  # noqa: I001
-from config import CHARACTER_COLLECTION, MONSTER_COLLECTION,DB_NAME
+from config import CHARACTER_COLLECTION, MONSTER_COLLECTION,DB_NAME,ITEM_COLLECTION
 client = MongoClient("mongodb://localhost:27017/")
 db = client[DB_NAME]
 
@@ -37,14 +37,40 @@ def insert_monsters():
     {"nom": "Le Coach Sadique",               "pv": 110, "attaque": 25, "defense": 12},
 ])
 
+def insert_items():
+    items = db[ITEM_COLLECTION]
+    items.insert_many([
+    # ── Armes : surtout de l'attaque ──
+    {"nom": "Serviette Humide",           "type": "arme",   "rarete": "commun",     "attaque": 3,  "defense": 0},
+    {"nom": "Shaker de Protéine",         "type": "arme",   "rarete": "commun",     "attaque": 3,  "defense": 1},
+    {"nom": "Élastique de Résistance",    "type": "arme",   "rarete": "commun",     "attaque": 4,  "defense": 1},
+    {"nom": "Corde à Sauter Fouettante",  "type": "arme",   "rarete": "rare",       "attaque": 6,  "defense": 1},
+    {"nom": "Kettlebell de Poche",        "type": "arme",   "rarete": "rare",       "attaque": 7,  "defense": 2},
+    {"nom": "Medecine Ball Explosif",     "type": "arme",   "rarete": "épique",     "attaque": 9,  "defense": 2},
+    {"nom": "Barre Olympique Chromée",    "type": "arme",   "rarete": "épique",     "attaque": 10, "defense": 3},
+    {"nom": "L'Haltère de Zeus",          "type": "arme",   "rarete": "légendaire", "attaque": 14, "defense": 3},
+
+    # ── Armures : surtout de la défense ──
+    {"nom": "Débardeur Troué",            "type": "armure", "rarete": "commun",     "attaque": 0,  "defense": 3},
+    {"nom": "Legging Fluo",               "type": "armure", "rarete": "commun",     "attaque": 1,  "defense": 3},
+    {"nom": "T-shirt Promo de la Salle",  "type": "armure", "rarete": "commun",     "attaque": 0,  "defense": 4},
+    {"nom": "Sweat à Capuche Trempé",     "type": "armure", "rarete": "rare",       "attaque": 1,  "defense": 6},
+    {"nom": "Ceinture de Force en Cuir",  "type": "armure", "rarete": "rare",       "attaque": 2,  "defense": 7},
+    {"nom": "Combinaison de Compression", "type": "armure", "rarete": "épique",     "attaque": 3,  "defense": 9},
+    {"nom": "Gilet Lesté Renforcé",       "type": "armure", "rarete": "épique",     "attaque": 2,  "defense": 10},
+    {"nom": "L'Armure du Gainage Absolu", "type": "armure", "rarete": "légendaire", "attaque": 3,  "defense": 14},
+])
 
 def insert_db():
     insert_characters()
     insert_monsters()
+    insert_items()
 
 def clear_db():
     db[CHARACTER_COLLECTION].delete_many({})
     db[MONSTER_COLLECTION].delete_many({})
+    db[ITEM_COLLECTION].delete_many
+
 
 clear_db()
 insert_db()
