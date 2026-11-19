@@ -1,10 +1,11 @@
 from db_interaction import get_top_scores  # noqa: I001
-from time import sleep
-from config import ROUND_TIME_GAP,LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE,ROUND_PANNEL_STYLE
+from config import LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE,ROUND_PANNEL_STYLE,MENU_PANEL_STYLE,LOOSE_MESSAGE,SELECTED_OPTION_STYLE
 from rich.panel import Panel
 from rich.align import Align
 from rich.table import Table
 from rich.console import Console
+from rich.markup import escape
+
 from utils import clear_screen
 console = Console()
 
@@ -44,6 +45,23 @@ def build_fight_panel(*items,style):
     
     return build_panel(style, text)
 
+
+def build_menu_panel(state,title):
+    text = build_menu_text(state)
+    
+    return build_panel({**MENU_PANEL_STYLE, "title": title}, text)
+
+
+def build_menu_text(state):
+    lines = []
+    for index, option in enumerate(state.options):
+        text = option
+        if index == state.index:
+            lines.append(f"{SELECTED_OPTION_STYLE}{text}[/]")
+        else:
+            lines.append(text)
+    text = "\n".join(lines)
+    return text
 
 def display_fight_info(team,monster,events,is_team_alive,score):
     clear_screen()
