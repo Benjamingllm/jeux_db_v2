@@ -5,7 +5,7 @@ from rich.panel import Panel
 from rich.align import Align
 from rich.table import Table
 from rich.console import Console
-
+from utils import clear_screen
 console = Console()
 
 def format_character_info(characters):
@@ -23,8 +23,6 @@ def display_round(round):
     pannel = build_panel(ROUND_PANNEL_STYLE,text)
     return pannel
     
-def clear_screen():
-    print("\033[H\033[2J\033[3J")
 
 
 def display_leaderboard(db):
@@ -57,7 +55,6 @@ def display_fight_info(team,monster,events,is_team_alive,score):
         display = [display_loose(score)]
     
     console.print(*display)
-    sleep(ROUND_TIME_GAP)
 
 
 
@@ -95,7 +92,4 @@ def format_height(grid, pannels):
         pannel.height = height
 
 ### Messages et message d'input ####
-MENU_CHOICE = "veuillez choisir une des options   "
-PSEUDO = "Entrez votre pseudo"
-MENU = "appuyez sur entrer pour revenir au menu"
-LOOSE_MESSAGE = "Toute votre équipe est morte "
+

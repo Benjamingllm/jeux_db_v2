@@ -1,7 +1,10 @@
-from display import MENU_CHOICE,PSEUDO,MENU,clear_screen # noqa: I001
+from config import MENU_CHOICE, PSEUDO, MENU
+from utils import clear_screen
 from InquirerPy.base.control import Choice
 from InquirerPy import inquirer
 import readchar
+from readchar import key
+
 
 def get_valid_choice(options):
     clear_screen()

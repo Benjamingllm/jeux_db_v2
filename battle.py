@@ -1,13 +1,17 @@
 
 
 from display import  display_fight_info# noqa: I001
-
+from utils import wait
 from models import  Monster, Attack, Dead,Drop,Item
 import random
+from config import ROUND_TIME_GAP
+from menu import open_menu
+
 
 def game_loop(team,monsters,items):
     
     score = 0
+    hotkeys = {"m": lambda: open_menu(team)}
     while is_team_alive(team):
         monster = pick_new_monster(monsters)
         while not monster.is_dead() and is_team_alive(team) :
@@ -15,6 +19,7 @@ def game_loop(team,monsters,items):
             events += team_attack(team,monster,items)
             score += 1
             display_fight_info(alive_team(team),monster,events,is_team_alive(team),score)
+            wait(ROUND_TIME_GAP,hotkeys)
     return score
 
 
@@ -77,7 +82,6 @@ def pick_random_item(rarity_dict,items):
     return item
 
 def pick_item(rarity,items):
-    print(items)
     item_list = items[rarity]
     return random.choice(item_list)
 

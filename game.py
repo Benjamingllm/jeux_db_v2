@@ -7,7 +7,7 @@ from models import Character
 from config import CHARACTER_COLLECTION,MONSTER_COLLECTION,ITEM_COLLECTION
 from inputs import get_valid_choice, ask_pseudo,menu_input
 from config import TEAM_LENGTH
-
+from menu import open_menu
 
 
 
