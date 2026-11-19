@@ -13,3 +13,10 @@ EVENT_PANEL_STYLE = {"title" : "Déroulé du combat", "style" : "white"}
 LOOSE_PANNEL_STYLE = {"style" : "bold red"}
 ROUND_PANNEL_STYLE = {"style": "bold cyan"}
 ITEM_COLLECTION = "items"
+RARITY_WEIGHTS_BY_LEVEL = {
+    1: {"commun": 0.80, "rare": 0.17, "épique": 0.3,  "légendaire": 0.00},
+    2: {"commun": 0.65, "rare": 0.27, "épique": 0.07,  "légendaire": 1.00},
+    3: {"commun": 0.50, "rare": 0.32, "épique": 0.14, "légendaire": 0.04},
+    4: {"commun": 0.35, "rare": 0.35, "épique": 0.22, "légendaire": 0.08},
+    5: {"commun": 0.00,  "rare": 0.45, "épique": 0.40, "légendaire": 0.15},
+}
