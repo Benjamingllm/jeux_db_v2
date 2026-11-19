@@ -62,10 +62,13 @@ def drop_item(monster,team,items):
     item = pick_random_item(rarity_dict,items)
     item_instance = Item(**item)
     character = pick_alive_character(team)
-    if character.is_item_pickable(item_instance):
-        character.add_item(item_instance)
-        item_instance.is_picked = True
+    add_item(item_instance,character)
     return item_instance
+
+def add_item(item,character):
+    if character.is_item_pickable(item):
+        character.add_item(item)
+        item.is_picked = True
 
 
 def pick_random_item(rarity_dict,items):
