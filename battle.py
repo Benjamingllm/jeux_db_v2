@@ -1,19 +1,18 @@
 
 
-from display import  display_fight_info # noqa: I001
+from display import  display_fight_info# noqa: I001
 
-from models import  Monster, Attack, Dead
+from models import  Monster, Attack, Dead,Drop,Item
 import random
 
-def game_loop(team,monsters):
+def game_loop(team,monsters,items):
     
     score = 0
     while is_team_alive(team):
         monster = pick_new_monster(monsters)
         while not monster.is_dead() and is_team_alive(team) :
             events = monster_attack(team,monster)
-            events += team_attack(team,monster)
-            
+            events += team_attack(team,monster,items)
             score += 1
             display_fight_info(alive_team(team),monster,events,is_team_alive(team),score)
     return score
@@ -44,19 +43,46 @@ def pick_alive_character(team):
 
     
 
-def team_attack(team,monster):
+def team_attack(team,monster,items):
 
     events = []
-
+    
     for character in alive_team(team) :
         damages = monster.take_damage(character.atk)
         if monster.is_dead():
-            event = Dead(monster,character)
-            events.append(event)
+            events.append(Dead(monster,character))
+            events.append(Drop(character,monster,drop_item(monster,team,items)))
             return events
         event = Attack(monster,character,damages)
         events.append(event)    
     return events
+
+def drop_item(monster,team,items):
+    rarity_dict = monster.rarity_dict
+    item = pick_random_item(rarity_dict,items)
+    item_instance = Item(**item)
+    character = pick_alive_character(team)
+    if character.is_item_pickable(item_instance):
+        character.add_item(item_instance)
+        item_instance.is_picked = True
+    return item_instance
+
+
+def pick_random_item(rarity_dict,items):
+    rarity = pick_rarity(rarity_dict)
+    item = pick_item(rarity,items)
+    return item
+
+def pick_item(rarity,items):
+    print(items)
+    item_list = items[rarity]
+    return random.choice(item_list)
+
+def pick_rarity(rarity_dict):
+    rarity_list = list(rarity_dict.keys())
+    wheight = rarity_dict.values()
+    return random.choices(rarity_list,weights= wheight)[0]
+
 
 
 def alive_team(team):
