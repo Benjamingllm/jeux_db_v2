@@ -37,4 +37,4 @@ MENU_PANEL_STYLE = {
 }
 STAT_PANEL_STYLE = { "style" : "green1"}
 INVENTORY_ACTION_STYLE  = { "style" : "white"}
-
+IGNORED_ATTRIBUTES = ["inventory","base_defense","base_atk","name"]

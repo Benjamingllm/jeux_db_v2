@@ -1,5 +1,5 @@
 from db_interaction import get_top_scores  # noqa: I001
-from config import LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE,ROUND_PANNEL_STYLE,MENU_PANEL_STYLE,LOOSE_MESSAGE,SELECTED_OPTION_STYLE,STAT_PANEL_STYLE,INVENTORY_ACTION_STYLE
+from config import LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE,ROUND_PANNEL_STYLE,MENU_PANEL_STYLE,LOOSE_MESSAGE,SELECTED_OPTION_STYLE,STAT_PANEL_STYLE,INVENTORY_ACTION_STYLE,IGNORED_ATTRIBUTES
 from rich.panel import Panel
 from rich.align import Align
 from rich.table import Table
@@ -57,7 +57,7 @@ def build_stat_panel(character,title,deltas):
 
 def build_stat_string(nom,valeur,deltas):
     string = None
-    if nom == "inventory":
+    if nom in IGNORED_ATTRIBUTES:
         return
     if deltas :
         string = build_deltas_string(nom,valeur,deltas)
