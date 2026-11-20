@@ -36,4 +36,5 @@ MENU_PANEL_STYLE = {
     "expand": False,                          
 }
 STAT_PANEL_STYLE = { "style" : "green1"}
+INVENTORY_ACTION_STYLE  = { "style" : "white"}
 

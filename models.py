@@ -144,6 +144,7 @@ class  InventoryView:
             return
         self.owner.remove_item(item)
         self.target.add_item(item)
+        
 
 
 

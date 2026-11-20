@@ -1,5 +1,5 @@
 from db_interaction import get_top_scores  # noqa: I001
-from config import LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE,ROUND_PANNEL_STYLE,MENU_PANEL_STYLE,LOOSE_MESSAGE,SELECTED_OPTION_STYLE,STAT_PANEL_STYLE
+from config import LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE,ROUND_PANNEL_STYLE,MENU_PANEL_STYLE,LOOSE_MESSAGE,SELECTED_OPTION_STYLE,STAT_PANEL_STYLE,INVENTORY_ACTION_STYLE
 from rich.panel import Panel
 from rich.align import Align
 from rich.table import Table
@@ -135,14 +135,18 @@ def format_height(grid, pannels):
     for pannel in pannels:
         pannel.height = height
 
-def build_inventory_screen(state,title,character,deltas):
-    grid  = create_grid(1,1)
+def build_inventory_screen(state,title,character,deltas,action_text):
+    grid  = create_grid(1,1,1)
     view_panel = build_menu_panel(state,title)
     stats_panel = build_stat_panel(character,character.name,deltas)
-    grid.add_row(view_panel, stats_panel)
+    actions_panel = build_inventory_action(action_text)
+    grid.add_row(view_panel, actions_panel,stats_panel)
     format_height(grid,[view_panel,stats_panel])
     return grid
 
+
+def build_inventory_action(action):
+    return build_panel(INVENTORY_ACTION_STYLE,action)
 
 
 

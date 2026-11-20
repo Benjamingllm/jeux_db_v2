@@ -79,11 +79,17 @@ class InventoryMenu:
     def render(self,state):
         item = self.selected_item(state)
         view  =  self.calculated_view()
+        action_text = self.action_text(view)
         deltas = None
         if item:
             deltas = self.stat_delta(item)
         
-        return build_inventory_screen(state, view.title, self.character,deltas)
+        return build_inventory_screen(state, view.title, self.character,deltas,action_text)
 
     def calculated_view(self):
         return self.views[self.current]
+
+    def action_text(self,view):
+        if view.owner == self.character:
+            return "Enter pour Deséquiper"
+        return "Entrer pour Equiper"
