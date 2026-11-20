@@ -2,12 +2,13 @@
 from config import RARITY_WEIGHTS_BY_LEVEL
 
 class Mob:
-    def __init__(self,name,hp,atk,defense):
+    def __init__(self,name,hp,base_atk,defense):
         self.name = name
         self.hp = hp
-        self.atk = atk
         self.base_defense = defense
         self.defense = self.base_defense
+        self.base_atk = base_atk
+        self.atk = self.base_atk
 
     def take_damage(self,amount):
         damages = max(1, amount - self.defense)
@@ -30,8 +31,8 @@ class Mob:
 
 
 class Monster(Mob):
-    def __init__(self, name, hp, atk, defense,drop_level):
-        super().__init__(name, hp, atk, defense)
+    def __init__(self, name, hp, base_atk, defense,drop_level):
+        super().__init__(name, hp, base_atk, defense)
         self.rarity_dict = RARITY_WEIGHTS_BY_LEVEL[drop_level]
 
     def __str__(self):
@@ -47,8 +48,8 @@ class Monster(Mob):
 
 
 class Character(Mob):
-    def __init__(self, name, hp, atk, base_defense):
-        super().__init__(name, hp, atk, base_defense)
+    def __init__(self, name, hp, base_atk, base_defense):
+        super().__init__(name, hp, base_atk, base_defense)
         self.inventory = []
 
     def __str__(self):
@@ -123,7 +124,6 @@ class Item:
         self.atk = atk
         self.defense = defense
         self.type = type
-        self.is_picked = False
 
     def __eq__(self, value):
         return isinstance(value, Item) and self.name == value.name

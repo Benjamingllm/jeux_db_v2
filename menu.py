@@ -64,10 +64,26 @@ class InventoryMenu:
             return None
         return self.items[state.index]
 
+    def stat_delta(self,item):
+        atk_delta = self.calculate_delta("atk",item)
+        character_delta = self.calculate_delta("defense",item)
+        deltas = (atk_delta,character_delta)
+        return deltas
+
+    def calculate_delta(self,stat,item):
+        item_stat = getattr(item,stat)
+        if self.calculated_view().title == self.character.name :
+                return -item_stat
+        return item_stat
+        
     def render(self,state):
         item = self.selected_item(state)
         view  =  self.calculated_view()
-        return build_inventory_screen(state, view.title, self.character, item)
+        deltas = None
+        if item:
+            deltas = self.stat_delta(item)
+        
+        return build_inventory_screen(state, view.title, self.character,deltas)
 
     def calculated_view(self):
         return self.views[self.current]

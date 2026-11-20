@@ -35,5 +35,5 @@ MENU_PANEL_STYLE = {
     "padding": (1, 2),                        
     "expand": False,                          
 }
-STAT_PANEL_STYLE = {"title" : "personnage", "style" : "green1"}
+STAT_PANEL_STYLE = { "style" : "green1"}
 

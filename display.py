@@ -44,21 +44,38 @@ def build_fight_panel(*items,style):
     
     return build_panel(style, text)
 
-def build_stat_panel(character,item):
+def build_stat_panel(character,title,deltas):
     lines = []
     for nom,valeur in vars(character).items():
-        if nom == "inventory":
-            continue
-        string = f"{nom} : {valeur}"
-        lines.append(string)
+        string = build_stat_string(nom,valeur,deltas)
+        if string:
+            lines.append(string)
     text =  "\n".join(lines)
     
-    panel = build_panel(STAT_PANEL_STYLE,text)
+    panel = build_panel({**STAT_PANEL_STYLE, "title": title},text)
     return panel
+
+def build_stat_string(nom,valeur,deltas):
+    string = None
+    if nom == "inventory":
+        return
+    if deltas :
+        string = build_deltas_string(nom,valeur,deltas)
+    if not string:
+        string = f"{nom} : {valeur},"
+    return string
+
+def build_deltas_string(nom,valeur,deltas):
+    if nom == "atk":
+        string = f"{nom}: {valeur} {deltas[0]}"
+        return string
+    if nom == "defense":
+        string = f"{nom}: {valeur} {deltas[1]}"
+        return string
+
 
 def build_menu_panel(state,title):
     text = build_menu_text(state)
-    
     return build_panel({**MENU_PANEL_STYLE, "title": title}, text)
 
 
@@ -118,10 +135,10 @@ def format_height(grid, pannels):
     for pannel in pannels:
         pannel.height = height
 
-def build_inventory_screen(state,title,character,item):
+def build_inventory_screen(state,title,character,deltas):
     grid  = create_grid(1,1)
     view_panel = build_menu_panel(state,title)
-    stats_panel = build_stat_panel(character,title)
+    stats_panel = build_stat_panel(character,character.name,deltas)
     grid.add_row(view_panel, stats_panel)
     format_height(grid,[view_panel,stats_panel])
     return grid

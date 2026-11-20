@@ -1,8 +1,9 @@
 TODO systeme equiper inventaire avec menu 
-    afficher la grid d'inventaire
-        afficher le pannel stat
-        afficher le pannel item
-            gerer le changement inventaire/ equipés
-            afficher pannel inventaire 
-            afficher pannel equipés
+    afficher la grid d'inventaire V
+        afficher le pannel stat V
+        afficher le pannel item V
+            gerer le changement inventaire/ equipés V
+            afficher pannel inventaire V
+            afficher pannel equipés V
+            afficher pannel action ( soit entré pour echanger, soit entrer pour equiper soit entrer pour déshequiper)
 TODO save game 
