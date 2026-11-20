@@ -40,13 +40,24 @@ class InventoryMenu:
             return state
         item = self.selected_item(state)
         view = self.calculated_view()
-        view.on_enter(item)
+        action = self.choose_action(item,view)
+        view.on_enter(item,action)
         self.items = view.get_items()
         index = max(min(state.index, len(self.items) - 1), 0)
         return qselect.SelectState(options=format_names(self.items), index=index)
 
     def quit_menu(self,state):
         return qselect.SelectState(options=state.options, index=None, exit=True)
+
+
+    def choose_action(self,item,view):
+        if item is None:
+            return None
+        if view.is_item_switchable(item):
+            return "switch"
+        if view.owner.name == self.character.name:
+            return "unequip" 
+        return "equip"
 
     def run(self):
         extra_keys = {
@@ -64,32 +75,34 @@ class InventoryMenu:
             return None
         return self.items[state.index]
 
-    def stat_delta(self,item):
-        atk_delta = self.calculate_delta("atk",item)
-        character_delta = self.calculate_delta("defense",item)
-        deltas = (atk_delta,character_delta)
+    def stat_delta(self,item,action):
+        atk_delta = self.calculate_delta("atk",item,action)
+        defense_delta = self.calculate_delta("defense",item,action)
+        deltas = (atk_delta,defense_delta)
         return deltas
 
-    def calculate_delta(self,stat,item):
+    def calculate_delta(self,stat,item,action):
         item_stat = getattr(item,stat)
+        base_stat = getattr(self.character,f"base_{stat}")
+        char_stat = getattr(self.character,stat)
         if self.calculated_view().title == self.character.name :
                 return -item_stat
+        if  action == "switch":
+            return  (base_stat -char_stat + item_stat)
         return item_stat
         
     def render(self,state):
         item = self.selected_item(state)
         view  =  self.calculated_view()
-        action_text = self.action_text(view)
+        action = self.choose_action(item,view)
+        action_text = view.actions[action][1] if action else ""
         deltas = None
         if item:
-            deltas = self.stat_delta(item)
+            deltas = self.stat_delta(item,action)
         
         return build_inventory_screen(state, view.title, self.character,deltas,action_text)
 
     def calculated_view(self):
         return self.views[self.current]
 
-    def action_text(self,view):
-        if view.owner == self.character:
-            return "Enter pour Deséquiper"
-        return "Entrer pour Equiper"
+    

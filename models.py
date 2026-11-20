@@ -67,13 +67,17 @@ class Character(Mob):
         self.atk -= item.atk
         self.inventory.remove(item)
 
-    def can_recieve(self,item):
-            return item not in self.inventory
+    def can_recieve(self,item_type):
+        for item in self.inventory:
+            if item_type == item.type:
+                return False
+        return True
+
 
 class Player:
-    def __init__(self,score,pseudo,inventory):
+    def __init__(self,score,name,inventory):
         self.score = score
-        self.pseudo = pseudo
+        self.name = name
         self.inventory = inventory
 
     def add_item(self,item):
@@ -84,6 +88,8 @@ class Player:
 
     def can_recieve(self,item):
         return True
+
+    
 
         
     
@@ -126,7 +132,7 @@ class Item:
         self.type = type
 
     def __eq__(self, value):
-        return isinstance(value, Item) and self.name == value.name
+        return isinstance(value, Item) and  self.name == value.name
 
 
 class  InventoryView:
@@ -135,16 +141,51 @@ class  InventoryView:
         self.title = title
         self.owner = owner
         self.target = target
+        self.actions = {
+            "switch" : (self.switch_item,"Entrer pour échanger avec l'item du meme type"),
+            "equip" : (self.add_item,"Entrer pour équiper"),
+            "unequip" : (self.add_item,"Entrer pour déséquiper")
+        }
 
     def get_items(self):
         return self.owner.inventory
 
-    def on_enter(self,item):
-        if not self.target.can_recieve(item):
-            return
-        self.owner.remove_item(item)
+    def on_enter(self,item,action):
+        self.actions[action][0](item)
+
+    def add_item(self,item):
         self.target.add_item(item)
-        
+        self.owner.remove_item(item)
+
+    def switch_item(self,item):
+        item_to_switch = self.get_item_in_inventory(item,self.target)
+        self.target.remove_item(item_to_switch)
+        self.target.add_item(item)
+        self.owner.remove_item(item)
+        self.owner.add_item(item_to_switch)
+
+    def is_item_switchable(self,item):
+        return not self.target.can_recieve(item.type)
+
+    def get_item_in_inventory(self,wanted_item,target):
+        for item in target.inventory:
+            if wanted_item.type == item.type:
+                return item
+
+"""i1 = Item("1","armure","legendaire",10,10)
+i2 = Item("2","armure","legendaire",10,10)
+o1 = Player(10,"player",[])
+o2 = Character("char",10,10,10)
+
+o1.add_item(i1)
+o2.add_item(i2)
+inv_view = InventoryView("test",o1,o2)
+inv_view.switch_item(i1)
+print(o1.inventory[0].name)
+print(o2.inventory[0].name)
+"""
+
+
 
 
 

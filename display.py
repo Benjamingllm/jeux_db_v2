@@ -67,10 +67,10 @@ def build_stat_string(nom,valeur,deltas):
 
 def build_deltas_string(nom,valeur,deltas):
     if nom == "atk":
-        string = f"{nom}: {valeur} {deltas[0]}"
+        string = f"{nom}: {valeur} {deltas[0]:+}"
         return string
     if nom == "defense":
-        string = f"{nom}: {valeur} {deltas[1]}"
+        string = f"{nom}: {valeur} {deltas[1]:+}"
         return string
 
 
