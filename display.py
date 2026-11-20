@@ -44,7 +44,7 @@ def build_fight_panel(*items,style):
     
     return build_panel(style, text)
 
-def build_stat_panel(character):
+def build_stat_panel(character,item):
     lines = []
     for nom,valeur in vars(character).items():
         if nom == "inventory":
@@ -103,11 +103,10 @@ def display_rounds_info(team,monster,events):
     format_height(grid,pannels)
     return grid
 
-def create_grid():
+def create_grid(*ratios):
     grid = Table.grid(expand=True)
-    grid.add_column(ratio =1)
-    grid.add_column(ratio =2)
-    grid.add_column(ratio =1)
+    for ratio in ratios:
+        grid.add_column(ratio=ratio)
     return grid
 
 def build_panel(style,text):
@@ -118,6 +117,18 @@ def format_height(grid, pannels):
     height = len(console.render_lines(grid, console.options))
     for pannel in pannels:
         pannel.height = height
+
+def build_inventory_screen(state,title,character,item):
+    grid  = create_grid(1,1)
+    view_panel = build_menu_panel(state,title)
+    stats_panel = build_stat_panel(character,title)
+    grid.add_row(view_panel, stats_panel)
+    format_height(grid,[view_panel,stats_panel])
+    return grid
+
+
+
+
 
 ### Messages et message d'input ####
 

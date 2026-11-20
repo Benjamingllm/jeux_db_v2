@@ -25,13 +25,15 @@ def menu_input_handler(menu,extra_keys = None):
             return menu.result
 
 def find_action(key,extra_keys):
-    return next((f for k, f in extra_keys.items() if key == k), None)
+    for extra_key, action in extra_keys.items():
+        if key == extra_key:
+            return action
+    return None
 
 def calculate_state(state,key,extra_keys):
     action = find_action(key,extra_keys)
-    if action:
-        if action:
-            return action(state)
+    if action:    
+        return action(state)
     if key in MENU_KEYS:
         return qselect.key_handler(state,key)
     return state
