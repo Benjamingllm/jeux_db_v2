@@ -14,9 +14,27 @@ LOOSE_PANNEL_STYLE = {"style" : "bold red"}
 ROUND_PANNEL_STYLE = {"style": "bold cyan"}
 ITEM_COLLECTION = "items"
 RARITY_WEIGHTS_BY_LEVEL = {
-    1: {"commun": 0.80, "rare": 0.17, "épique": 0.3,  "légendaire": 0.00},
-    2: {"commun": 0.65, "rare": 0.27, "épique": 0.07,  "légendaire": 1.00},
+    1: {"commun": 0.80, "rare": 0.17, "épique": 0.03,  "légendaire": 0.00},
+    2: {"commun": 0.65, "rare": 0.27, "épique": 0.07,  "légendaire": 0.01},
     3: {"commun": 0.50, "rare": 0.32, "épique": 0.14, "légendaire": 0.04},
     4: {"commun": 0.35, "rare": 0.35, "épique": 0.22, "légendaire": 0.08},
     5: {"commun": 0.00,  "rare": 0.45, "épique": 0.40, "légendaire": 0.15},
 }
+
+MENU_CHOICE = "veuillez choisir une des options"
+PSEUDO = "Entrez votre pseudo"
+MENU = "appuyez sur entrer pour revenir au menu"
+LOOSE_MESSAGE = "Toute votre équipe est morte "
+SELECTED_OPTION_STYLE = "[bold black on green1]"
+
+MENU_PANEL_STYLE = {
+    "border_style": "green1",
+    "title_align": "left",                    
+    "subtitle": "[dim]↑↓ · Entrée[/]",        
+    "subtitle_align": "right",
+    "padding": (1, 2),                        
+    "expand": False,                          
+}
+STAT_PANEL_STYLE = { "style" : "green1"}
+INVENTORY_ACTION_STYLE  = { "style" : "white"}
+IGNORED_ATTRIBUTES = ["inventory","base_defense","base_atk","name"]

@@ -3,12 +3,11 @@
 from db_interaction import get_database_items,save_score  # noqa: I001
 from display import format_character_info,display_leaderboard,clear_screen
 from battle import game_loop
-from models import Character
+from models import Character,Player
 from config import CHARACTER_COLLECTION,MONSTER_COLLECTION,ITEM_COLLECTION
 from inputs import get_valid_choice, ask_pseudo,menu_input
 from config import TEAM_LENGTH
-
-
+from db_interaction import get_top_scores
 
 
 
@@ -20,8 +19,9 @@ def play(db):
     team = create_team(characters)
     monsters = get_database_items(db,MONSTER_COLLECTION)
     items = organized_items(db)
-    score = game_loop(team,monsters,items)
-    save_score(score,pseudo,db)
+    player = Player(0,pseudo,[])
+    game_loop(team,monsters,items,player)
+    save_score(player.score,pseudo,db)
     menu_input()
     clear_screen()
 
@@ -60,7 +60,8 @@ def team_not_full(team):
 
 
 def leaderboard(db):
-    display_leaderboard(db)
+    scores = get_top_scores(db)
+    display_leaderboard(scores)
     menu_input()
 
 

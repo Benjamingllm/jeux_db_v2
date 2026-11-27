@@ -1,11 +1,12 @@
 from db_interaction import get_top_scores  # noqa: I001
-from time import sleep
-from config import ROUND_TIME_GAP,LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE,ROUND_PANNEL_STYLE
+from config import LEADERBOARD_STYLE,TEAM_PANEL_STYLE,MONSTER_PANEL_STYLE,EVENT_PANEL_STYLE,LOOSE_PANNEL_STYLE,ROUND_PANNEL_STYLE,MENU_PANEL_STYLE,LOOSE_MESSAGE,SELECTED_OPTION_STYLE,STAT_PANEL_STYLE,INVENTORY_ACTION_STYLE,IGNORED_ATTRIBUTES
 from rich.panel import Panel
 from rich.align import Align
 from rich.table import Table
 from rich.console import Console
+from rich.markup import escape
 
+from utils import clear_screen
 console = Console()
 
 def format_character_info(characters):
@@ -23,12 +24,9 @@ def display_round(round):
     pannel = build_panel(ROUND_PANNEL_STYLE,text)
     return pannel
     
-def clear_screen():
-    print("\033[H\033[2J\033[3J")
 
 
-def display_leaderboard(db):
-    scores = get_top_scores(db)
+def display_leaderboard(scores):
     lines = []
     for score in scores:
         lines.append(f"{score["pseudo"]} : {score["score"] } points")
@@ -46,6 +44,51 @@ def build_fight_panel(*items,style):
     
     return build_panel(style, text)
 
+def build_stat_panel(character,title,deltas):
+    lines = []
+    for nom,valeur in vars(character).items():
+        string = build_stat_string(nom,valeur,deltas)
+        if string:
+            lines.append(string)
+    text =  "\n".join(lines)
+    
+    panel = build_panel({**STAT_PANEL_STYLE, "title": title},text)
+    return panel
+
+def build_stat_string(nom,valeur,deltas):
+    string = None
+    if nom in IGNORED_ATTRIBUTES:
+        return
+    if deltas :
+        string = build_deltas_string(nom,valeur,deltas)
+    if not string:
+        string = f"{nom} : {valeur},"
+    return string
+
+def build_deltas_string(nom,valeur,deltas):
+    if nom == "atk":
+        string = f"{nom}: {valeur} {deltas[0]:+}"
+        return string
+    if nom == "defense":
+        string = f"{nom}: {valeur} {deltas[1]:+}"
+        return string
+
+
+def build_menu_panel(state,title):
+    text = build_menu_text(state)
+    return build_panel({**MENU_PANEL_STYLE, "title": title}, text)
+
+
+def build_menu_text(state):
+    lines = []
+    for index, option in enumerate(state.options):
+        text = option
+        if index == state.index:
+            lines.append(f"{SELECTED_OPTION_STYLE}{text}[/]")
+        else:
+            lines.append(text)
+    text = "\n".join(lines)
+    return text
 
 def display_fight_info(team,monster,events,is_team_alive,score):
     clear_screen()
@@ -57,7 +100,6 @@ def display_fight_info(team,monster,events,is_team_alive,score):
         display = [display_loose(score)]
     
     console.print(*display)
-    sleep(ROUND_TIME_GAP)
 
 
 
@@ -78,11 +120,10 @@ def display_rounds_info(team,monster,events):
     format_height(grid,pannels)
     return grid
 
-def create_grid():
+def create_grid(*ratios):
     grid = Table.grid(expand=True)
-    grid.add_column(ratio =1)
-    grid.add_column(ratio =2)
-    grid.add_column(ratio =1)
+    for ratio in ratios:
+        grid.add_column(ratio=ratio)
     return grid
 
 def build_panel(style,text):
@@ -94,8 +135,21 @@ def format_height(grid, pannels):
     for pannel in pannels:
         pannel.height = height
 
+def build_inventory_screen(state,title,character,deltas,action_text):
+    grid  = create_grid(1,1,1)
+    view_panel = build_menu_panel(state,title)
+    stats_panel = build_stat_panel(character,character.name,deltas)
+    actions_panel = build_inventory_action(action_text)
+    grid.add_row(view_panel, actions_panel,stats_panel)
+    format_height(grid,[view_panel,stats_panel])
+    return grid
+
+
+def build_inventory_action(action):
+    return build_panel(INVENTORY_ACTION_STYLE,action)
+
+
+
+
 ### Messages et message d'input ####
-MENU_CHOICE = "veuillez choisir une des options   "
-PSEUDO = "Entrez votre pseudo"
-MENU = "appuyez sur entrer pour revenir au menu"
-LOOSE_MESSAGE = "Toute votre équipe est morte "
+
